@@ -1,0 +1,28 @@
+{
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "diffEditor.renderSideBySide": false,
+    "editor.rulers": [
+        80
+    ],
+    "editor.minimap.maxColumn": 80,
+    "[dockerfile]": {
+        "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+    },
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+    },
+    "isort.args": [
+        "--profile",
+        "black"
+    ],
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.typeCheckingMode": "standard",
+    "black-formatter.args": [
+        "--line-length",
+        "80"
+    ]
+}
