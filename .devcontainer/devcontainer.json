@@ -9,7 +9,7 @@
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip install --upgrade pip && pip install -r requirements.txt",
+	"postCreateCommand": "pip install --upgrade pip && pip install -r requirements.txt -r requirements-dev.txt",
 	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
