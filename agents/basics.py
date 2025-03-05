@@ -121,7 +121,7 @@ def human_assistance(
         "messages": [ToolMessage(response, tool_call_id=tool_call_id)],
     }
     # We return a Command object in the tool to update our state.
-    return Command(update=state_update)  # pyright: ignore [reportReturnType]
+    return Command(update=state_update)  # type: ignore[return-value]
 
 
 class GeminiAgent:
