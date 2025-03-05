@@ -189,3 +189,99 @@ Based on: https://langchain-ai.github.io/langgraph/concepts/low_level/
 #             "messages": [ToolMessage("Successfully looked up user information", tool_call_id=tool_call_id)]
 #         }
 #     )
+
+# =============================================================================
+# interrupt
+# =============================================================================
+
+# from langgraph.types import interrupt
+
+# def human_approval_node(state: State):
+#     ...
+#     answer = interrupt(
+#         # This value will be sent to the client.
+#         # It can be any JSON serializable value.
+#         {"question": "is it ok to continue?"},
+#     )
+#     ...
+
+# =============================================================================
+# Configuration
+# =============================================================================
+
+# class ConfigSchema(TypedDict):
+#     llm: str
+
+# graph = StateGraph(State, config_schema=ConfigSchema)
+
+# config = {"configurable": {"llm": "anthropic"}}
+
+# graph.invoke(inputs, config=config)
+
+# def node_a(state, config):
+#     llm_type = config.get("configurable", {}).get("llm", "openai")
+#     llm = get_llm(llm_type)
+#     ...
+
+# graph.invoke(inputs, config={"recursion_limit": 5, "configurable":{"llm": "anthropic"}})
+
+# =============================================================================
+# Subgraphs
+# =============================================================================
+
+# from langgraph.graph import StateGraph
+# from typing import TypedDict
+
+# class State(TypedDict):
+#     foo: str
+
+# class SubgraphState(TypedDict):
+#     foo: str  # note that this key is shared with the parent graph state
+#     bar: str
+
+# # Define subgraph
+# def subgraph_node(state: SubgraphState):
+#     # note that this subgraph node can communicate with the parent graph via the shared "foo" key
+#     return {"foo": state["foo"] + "bar"}
+
+# subgraph_builder = StateGraph(SubgraphState)
+# subgraph_builder.add_node(subgraph_node)
+# ...
+# subgraph = subgraph_builder.compile()
+
+# # Define parent graph
+# builder = StateGraph(State)
+# builder.add_node("subgraph", subgraph)
+# ...
+# graph = builder.compile()
+
+
+# class State(TypedDict):
+#     foo: str
+
+# class SubgraphState(TypedDict):
+#     # note that none of these keys are shared with the parent graph state
+#     bar: str
+#     baz: str
+
+# # Define subgraph
+# def subgraph_node(state: SubgraphState):
+#     return {"bar": state["bar"] + "baz"}
+
+# subgraph_builder = StateGraph(SubgraphState)
+# subgraph_builder.add_node(subgraph_node)
+# ...
+# subgraph = subgraph_builder.compile()
+
+# # Define parent graph
+# def node(state: State):
+#     # transform the state to the subgraph state
+#     response = subgraph.invoke({"bar": state["foo"]})
+#     # transform response back to the parent state
+#     return {"foo": response["bar"]}
+
+# builder = StateGraph(State)
+# # note that we are using `node` function instead of a compiled subgraph
+# builder.add_node(node)
+# ...
+# graph = builder.compile()
