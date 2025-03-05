@@ -10,7 +10,7 @@ from typing import Annotated, Any, Callable, cast
 
 import dotenv
 from langchain_community.tools.tavily_search import TavilySearchResults
-from langchain_core.messages import AIMessage, ToolMessage
+from langchain_core.messages import AIMessage, AnyMessage, ToolMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import InjectedToolCallId, tool
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -121,14 +121,14 @@ def human_assistance(
         "messages": [ToolMessage(response, tool_call_id=tool_call_id)],
     }
     # We return a Command object in the tool to update our state.
-    return Command(update=state_update)  # type: ignore
+    return Command(update=state_update)  # pyright: ignore [reportReturnType]
 
 
 class GeminiAgent:
     """Simple gemini agent that uses a chatbot and tools."""
 
     class State(TypedDict):
-        messages: Annotated[list, add_messages]
+        messages: Annotated[list[AnyMessage], add_messages]
         name: str
         birthday: str
 

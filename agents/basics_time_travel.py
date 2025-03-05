@@ -8,6 +8,7 @@ from typing import Annotated
 
 import dotenv
 from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain_core.messages import AnyMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.checkpoint.memory import MemorySaver
@@ -21,7 +22,7 @@ dotenv.load_dotenv()
 
 
 class State(TypedDict):
-    messages: Annotated[list, add_messages]
+    messages: Annotated[list[AnyMessage], add_messages]
 
 
 graph_builder = StateGraph(State)
@@ -36,7 +37,7 @@ llm = ChatGoogleGenerativeAI(
     timeout=None,
     max_retries=2,
 )
-llm_with_tools = llm.bind_tools(tools)  # pyright: ignore [reportArgumentType]
+llm_with_tools = llm.bind_tools(tools)  # type: ignore[arg-type]
 
 
 def chatbot(state_: State):
@@ -111,15 +112,17 @@ for state in graph.get_state_history(config):
         # based on the number of chat messages in the state.
         to_replay = state
 
-print(to_replay.next)  # pyright: ignore [reportOptionalMemberAccess]
-print(to_replay.config)  # pyright: ignore [reportOptionalMemberAccess]
+if to_replay is not None:
+    print(to_replay.next)
+    print(to_replay.config)
 
-# The `checkpoint_id` in the `to_replay.config` corresponds
-# to a state we've persisted to our checkpointer.
-for event in graph.stream(
-    None,
-    to_replay.config,  # pyright: ignore [reportOptionalMemberAccess]
-    stream_mode="values",
-):
-    if "messages" in event:
-        event["messages"][-1].pretty_print()
+if to_replay is not None:
+    # The `checkpoint_id` in the `to_replay.config` corresponds
+    # to a state we've persisted to our checkpointer.
+    for event in graph.stream(
+        None,
+        to_replay.config,
+        stream_mode="values",
+    ):
+        if "messages" in event:
+            event["messages"][-1].pretty_print()
