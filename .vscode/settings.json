@@ -24,5 +24,10 @@
     "black-formatter.args": [
         "--line-length",
         "80"
+    ],
+    "github.copilot.chat.commitMessageGeneration.instructions": [
+        {
+            "text": "Include all the changes made in the commit."
+        }
     ]
 }
