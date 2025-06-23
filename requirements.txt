@@ -1,9 +1,12 @@
-python-dotenv==1.0.1
+# Updated on 2025-06-23
+
+python-dotenv==1.1.0
 
 bs4==0.0.2
-chromadb==0.6.3
+chromadb==1.0.13
 
-langgraph==0.2.74
-langchain==0.3.19
-langchain_community==0.3.18
-langchain-google-genai==2.0.10
+langgraph==0.4.8
+langchain==0.3.26
+langchain-community==0.3.26
+langchain-google-genai==2.1.5
+langchain-tavily==0.2.4

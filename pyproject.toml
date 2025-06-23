@@ -28,3 +28,7 @@ multi_line_output = 3
 minversion = "7.0"
 addopts = "-ra -q"
 testpaths = ["tests"]
+
+[[tool.mypy.overrides]]
+module = ["untyped_package.*"]
+follow_untyped_imports = true

@@ -13,13 +13,10 @@ https://langchain-ai.github.io/langgraph/tutorials/rag/langgraph_agentic_rag/
 
 # _set_env("OPENAI_API_KEY")
 
-import dotenv
-
-dotenv.load_dotenv()
-
 import pprint
 from typing import Annotated, Literal, Sequence
 
+import dotenv
 from langchain import hub
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.vectorstores import Chroma
@@ -40,6 +37,8 @@ from langgraph.graph.state import CompiledStateGraph, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 from pydantic import BaseModel, Field
 from typing_extensions import TypedDict
+
+dotenv.load_dotenv()
 
 
 def create_llm_model() -> ChatGoogleGenerativeAI:
